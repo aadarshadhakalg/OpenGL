@@ -2,10 +2,12 @@
 #include <GLFW/glfw3.h>
 #include <Eigen/Dense>
 #include <algorithm>
+#include <vector>
 
 typedef Eigen::Matrix<float, 4, 2> ViewPort;
 typedef Eigen::Matrix<float, 2, 2> Line;
 typedef Eigen::Matrix<float, 1, 2> Point;
+typedef Eigen::Matrix<float, 4, 2> Polygon;
 
 const ViewPort VIEW_PORT{
     {-0.5f, -0.5f},
@@ -13,10 +15,14 @@ const ViewPort VIEW_PORT{
     {0.5f, 0.5f},
     {-0.5f, 0.5f}};
 
-const Line initial{
+const Polygon initial{
     {-1.0f, -1.0f},
-    {1.0f, 1.0f},
+    {1.0f, -1.0f},
+    {0.2f, 1.0f},
+    {-0.2f, 1.0f},
 };
+
+std::vector<Point> clippedPolygon;
 
 float xMax;
 float xMin;
@@ -56,7 +62,7 @@ int getRegionCode(Point l1, ViewPort viewPort)
     return regionCode;
 }
 
-Line clipLine(Line l1, ViewPort viewPort)
+void clipLine(Line l1, ViewPort viewPort)
 {
     Point p1 = l1.row(0);
     Point p2 = l1.row(1);
@@ -75,11 +81,55 @@ Line clipLine(Line l1, ViewPort viewPort)
 
         if (res != 0)
         {
-            std::cout << "The line lies outside viewport" << std::endl;
-            exit(1);
+
+            if (p1RegionCode >= 8)
+            {
+                p1 = Point{p1(0), yMax};
+                p1RegionCode = getRegionCode(p1, viewPort);
+            }
+            if (p1RegionCode >= 4)
+            {
+                p1 = Point{p1(0), yMin};
+                p1RegionCode = getRegionCode(p1, viewPort);
+            }
+            if (p1RegionCode >= 2)
+            {
+                p1 = Point{xMax, p1(1)};
+                p1RegionCode = getRegionCode(p1, viewPort);
+            }
+
+            if (p1RegionCode >= 1)
+            {
+                p1 = Point{xMin, p1(1)};
+                p1RegionCode = getRegionCode(p1, viewPort);
+            }
+
+            if (p2RegionCode >= 8)
+            {
+                p2 = Point{p2(0), yMax};
+                p2RegionCode = getRegionCode(p2, viewPort);
+            }
+            if (p2RegionCode >= 4)
+            {
+                p2 = Point{p2(0), yMin};
+                p2RegionCode = getRegionCode(p2, viewPort);
+            }
+            if (p2RegionCode >= 2)
+            {
+                p2 = Point{xMax, p2(1)};
+                p2RegionCode = getRegionCode(p2, viewPort);
+            }
+
+            if (p2RegionCode >= 1)
+            {
+                p2 = Point{xMin, p2(1)};
+                p2RegionCode = getRegionCode(p2, viewPort);
+            }
+
+            continue;
         }
 
-        if (p1RegionCode != 0)
+        else if (p1RegionCode != 0)
         {
             if (p1RegionCode >= 8)
             {
@@ -130,10 +180,8 @@ Line clipLine(Line l1, ViewPort viewPort)
         }
     }
 
-    return Line{
-        {p1(0), p1(1)},
-        {p2(0), p2(1)},
-    };
+    clippedPolygon.push_back(p1);
+    clippedPolygon.push_back(p2);
 }
 
 void drawViewPort(ViewPort viewPort = VIEW_PORT)
@@ -147,14 +195,27 @@ void drawViewPort(ViewPort viewPort = VIEW_PORT)
     glEnd();
 }
 
-void drawLine(Line l1, ViewPort viewPort = VIEW_PORT)
+void clipPolygon(Polygon poly, ViewPort viewPort = VIEW_PORT)
 {
-    Line line = clipLine(l1, viewPort);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glBegin(GL_LINES);
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 4; i++)
     {
-        glVertex2f(line.row(i)(0), line.row(i)(1));
+
+        // Convert Polygon to Lines
+        Line initialLine{
+            {poly.row(i)[0], poly.row(i)[1]},
+            {poly.row((i + 1) % 4)[0], poly.row((i + 1) % 4)[1]},
+        };
+        clipLine(initialLine, viewPort);
+    }
+}
+
+void drawPolygon(Polygon poly, ViewPort viewPort = VIEW_PORT)
+{
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_POLYGON);
+    for (int i = 0; i < clippedPolygon.size(); i++)
+    {
+        glVertex2f(clippedPolygon[i](0), clippedPolygon[i](1));
     }
     glEnd();
 }
@@ -168,7 +229,7 @@ int main()
         return -1;
     }
 
-    window = glfwCreateWindow(600, 400, "Cohen Sutherland", nullptr, nullptr);
+    window = glfwCreateWindow(600, 400, "Sutherland Hodgemann Polygon Clipping", nullptr, nullptr);
 
     if (!window)
     {
@@ -178,13 +239,14 @@ int main()
 
     glfwMakeContextCurrent(window);
 
+    clipPolygon(initial, VIEW_PORT);
+
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
         drawViewPort();
-        drawLine(initial);
-
+        drawPolygon(initial);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
