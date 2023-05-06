@@ -1,0 +1,3 @@
+[submodule "libraries/rest-cpp"]
+	path = libraries/rest-cpp
+	url = https://github.com/aadarshadhakalg/restc-cpp
