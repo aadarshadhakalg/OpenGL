@@ -2,6 +2,11 @@
 #include <GLFW/glfw3.h>
 #include <restc-cpp/restc-cpp.h>
 
+typedef void (* GameScreen)(GLFWwindow* window);
+
+
+GameScreen* gameScreen;
+
 void process_keys(GLFWwindow* window, int key, int scancode, int action,int mods){
     if(key == GLFW_KEY_SPACE && action == GLFW_PRESS){
         std::cout << "Start The Game" << std::endl;
@@ -27,10 +32,13 @@ int main(){
 
     glfwMakeContextCurrent(window);
 
+    gameScreen = startScreen();
+
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
+        void startScreen();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

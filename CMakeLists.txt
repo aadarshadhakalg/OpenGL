@@ -12,6 +12,7 @@ include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(libraries/glew/include/)
 include_directories(libraries/restc-cpp/include/)
 include_directories(${EIGEN3_INCLUDE_DIRS})
+include_directories(include/)
 
 #GLFW Disable Unnecessary Builds
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -22,7 +23,8 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/restc-cpp)
 
-set(LAB2_SOURCE_FILES hangman.cpp)
-add_executable(flag ${LAB2_SOURCE_FILES})
+file(GLOB HANGMAN_SOURCES src/*.cpp)
+# set(LAB2_SOURCE_FILES hangman.cpp)
+add_executable(flag ${HANGMAN_SOURCES})
 
 target_link_libraries(flag ${OPENGL_LIBRARIES} ${EIGEN3_LIBRARIES} ${CMAKE_SOURCE_DIR}/libraries/glew/lib/Release/x64/glew32s.lib glfw restc-cpp)
