@@ -78,10 +78,9 @@ bool DisplayText::initialize_freetype()
     FT_Done_FreeType(ft);
 }
 
-Shader DisplayText::compile_text_shaders( unsigned int SCR_WIDTH = 800,unsigned int SCR_HEIGHT = 600)
+Shader DisplayText::compile_text_shaders( unsigned int SCR_WIDTH ,unsigned int SCR_HEIGHT )
 {
     // Shader Compilation
-    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
