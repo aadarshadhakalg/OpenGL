@@ -6,11 +6,14 @@ set(CMAKE_CXX_STANDARD 17)
 # Find package installed in system
 find_package(OpenGL REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(GLEW REQUIRED)
+
 
 # Include OPENGL Header Files
 include_directories(${OPENGL_INCLUDE_DIRS})
-include_directories(libraries/glew/include/)
 include_directories(libraries/restc-cpp/include/)
+# include_directories(libraries/glew/include/)
+include_directories(${GLEW_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(include/)
 
@@ -24,7 +27,9 @@ add_subdirectory(libraries/glfw)
 add_subdirectory(libraries/restc-cpp)
 
 file(GLOB HANGMAN_SOURCES src/*.cpp)
-# set(LAB2_SOURCE_FILES hangman.cpp)
+# set(LAB2_SOURCE_FILES src/labs/miniproject.cpp)
 add_executable(flag ${HANGMAN_SOURCES})
+# add_executable(flag ${LAB2_SOURCE_FILES})
 
-target_link_libraries(flag ${OPENGL_LIBRARIES} ${EIGEN3_LIBRARIES} ${CMAKE_SOURCE_DIR}/libraries/glew/lib/Release/x64/glew32s.lib glfw restc-cpp)
+
+target_link_libraries(flag ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${EIGEN3_LIBRARIES}  glfw restc-cpp)

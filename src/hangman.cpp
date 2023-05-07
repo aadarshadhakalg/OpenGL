@@ -1,6 +1,7 @@
-#include <iostream>
-#include <GLFW/glfw3.h>
 #include <restc-cpp/restc-cpp.h>
+#include <iostream>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 typedef void (* GameScreen)(GLFWwindow* window);
 
@@ -32,7 +33,20 @@ int main(){
 
     glfwMakeContextCurrent(window);
 
-    gameScreen = startScreen();
+    // gameScreen = startScreen();
+    if(glewInit() != GLEW_OK){
+        std::cout << "Error Initializing GLEW" << std::endl;
+    }
+
+    std::cout << glGetString(GL_VERSION) << std::endl;
+
+    // CREATING VAO and VBA
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER,buffer);
+    // glBufferData(GL_ARRAY_BUFFER, 6);
+
+
 
     while (!glfwWindowShouldClose(window))
     {
