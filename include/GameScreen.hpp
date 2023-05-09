@@ -11,12 +11,13 @@
 #include <DataService.hpp>
 #include <Utilities.hpp>
 #include "DrawHangman.hpp"
+#include "InputHandlers.hpp"
 
 
 class GameScreen: public Screen {
 private:
     Word* word;
-
+    int failedAttempt =0;
 
 public:
 
@@ -28,7 +29,7 @@ public:
 
 
     int display() override;
-    void drawHangman(int failures);
+    void drawHangman();
     void drawCharPlaceHolder();
     std::string getID() override;
 };

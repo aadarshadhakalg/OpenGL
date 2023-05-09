@@ -12,7 +12,7 @@ int GameScreen::display() {
     displayText->render_text(("Hint: " + word->getWordHint()).c_str(),-0.5,0.8, white,36,0,0);
 
 
-    drawHangman(0);
+    drawHangman();
     drawCharPlaceHolder();
 
     // Bottom Separator
@@ -31,16 +31,34 @@ std::string GameScreen::getID() {
     return id;
 }
 
-void GameScreen::drawHangman(int failures) {
-    if(failures == 0){
+void GameScreen::drawHangman() {
+    if(failedAttempt >= 0){
         drawBar();
+    }
+
+    if(failedAttempt >=1){
         drawHead();
-        drawRope();
-        drawLeftHand();
-        drawRightHand();
-        drawLeftLeg();
-        drawRightLeg();
+    }
+    if(failedAttempt >=2){
         drawBody();
+    }
+    if(failedAttempt >=3){
+        drawRightHand();
+    }
+    if(failedAttempt >= 4){
+        drawLeftHand();
+    }
+    if(failedAttempt >= 5){
+        drawLeftLeg();
+    }
+    if(failedAttempt >= 6){
+        drawRightLeg();
+    }
+    if(failedAttempt >= 7){
+        drawRope();
+        sleep(1);
+        Navigator* navigator = Navigator::getInstance();
+        goToDeadScreen(navigator);
     }
 }
 
@@ -48,6 +66,7 @@ void GameScreen::drawCharPlaceHolder() {
     // x start from -0.3
     // max 10 chars
     bool isComplete = true;
+    std::vector<char> detectedChar;
     DataService* dataService = DataService::getInstance();
     std::vector<char> typedWords = dataService->typpedWords;
 
@@ -61,6 +80,11 @@ void GameScreen::drawCharPlaceHolder() {
         if (std::count(typedWords.begin(), typedWords.end(), answerWord[i])) {
             char letter = answerWord[i];
             DisplayText::getInstance()->render_text(&letter,startAtX+0.01,0.0,white,48,0,0);
+
+            if (!std::count( detectedChar.begin(), detectedChar.end(), letter)) {
+                detectedChar.push_back(letter);
+            }
+
         }else{
             isComplete = false;
         }
@@ -72,6 +96,9 @@ void GameScreen::drawCharPlaceHolder() {
     }
 
     if(isComplete){
-        std::cout << "Congratulations Completed" << std::endl;
+        Navigator* navigator = Navigator::getInstance();
+        goToWonScreen(navigator);
     }
+
+    failedAttempt = typedWords.size() - detectedChar.size();
 }

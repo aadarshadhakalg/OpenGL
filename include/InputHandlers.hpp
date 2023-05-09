@@ -9,8 +9,12 @@
 #include "Navigator.hpp"
 #include "StartScreen.hpp"
 #include "GameScreen.hpp"
+#include "DeadScreen.hpp"
+#include "WonScreen.hpp"
 
 void goToHomeScreen(Navigator * navigator);
+void goToWonScreen(Navigator * navigator);
+void goToDeadScreen(Navigator * navigator);
 
 
 void goToGameScreen(Navigator * navigator);

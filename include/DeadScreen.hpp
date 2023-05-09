@@ -6,8 +6,20 @@
 #define HANGMAN_DEADSCREEN_HPP
 
 
-class DeadScreen {
+#include "Screen.hpp"
+#include "DisplayText.hpp"
 
+class DeadScreen: public Screen{
+
+public:
+    DeadScreen(){
+        id = "deadScreen";
+    };
+    ~DeadScreen() = default;
+
+
+    int display() override;
+    std::string getID() override;
 };
 
 

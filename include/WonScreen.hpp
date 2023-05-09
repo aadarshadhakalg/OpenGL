@@ -6,8 +6,20 @@
 #define HANGMAN_WONSCREEN_HPP
 
 
-class WonScreen {
+#include "DisplayText.hpp"
+#include "Screen.hpp"
 
+class WonScreen : public Screen{
+
+public:
+    WonScreen(){
+        id = "wonScreen";
+    };
+    ~WonScreen() = default;
+
+
+    int display() override;
+    std::string getID() override;
 };
 
 

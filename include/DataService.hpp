@@ -50,6 +50,7 @@ private:
 
 public:
     std::vector<char> typpedWords;
+    int failures = 0;
     static DataService*   getInstance();
     Word* getRandomMovieDetail();
 };

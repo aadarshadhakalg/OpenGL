@@ -11,7 +11,9 @@ void goToHomeScreen(Navigator * navigator){
 
 
 void goToGameScreen(Navigator * navigator){
-    DataService::getInstance()->typpedWords.clear();
+    auto dataService = DataService::getInstance();
+    dataService->typpedWords.clear();
+    dataService->failures = 0;
     Screen* gameScreen = new GameScreen();
     navigator->setCurrentScreen(gameScreen);
 }
@@ -45,4 +47,14 @@ void processInputKeys(GLFWwindow *window, int key, int scancode, int action, int
 
     }
 
+}
+
+void goToDeadScreen(Navigator *navigator) {
+    Screen* deadScreen = new DeadScreen();
+    navigator->setCurrentScreen(deadScreen);
+}
+
+void goToWonScreen(Navigator *navigator) {
+    Screen* wonScreen = new WonScreen();
+    navigator->setCurrentScreen(wonScreen);
 }
