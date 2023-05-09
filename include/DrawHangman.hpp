@@ -5,6 +5,8 @@
 #ifndef HANGMAN_DRAWHANGMAN_HPP
 #define HANGMAN_DRAWHANGMAN_HPP
 
+#include <GL/glew.h>
+
 void drawBar();
 void drawRope();
 void drawHead();

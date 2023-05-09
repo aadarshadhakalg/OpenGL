@@ -10,6 +10,8 @@
 #include <DisplayText.hpp>
 #include <DataService.hpp>
 #include <Utilities.hpp>
+#include "DrawHangman.hpp"
+
 
 class GameScreen: public Screen {
 private:
@@ -27,6 +29,7 @@ public:
 
     int display() override;
     void drawHangman(int failures);
+    void drawCharPlaceHolder();
     std::string getID() override;
 };
 

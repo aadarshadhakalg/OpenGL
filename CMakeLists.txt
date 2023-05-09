@@ -28,7 +28,7 @@ add_subdirectory(libraries/restc-cpp)
 
 file(GLOB HANGMAN_SOURCES src/*.cpp)
 # set(LAB2_SOURCE_FILES src/labs/miniproject.cpp)
-add_executable(hangman ${HANGMAN_SOURCES} src/Shader.cpp src/Navigator.cpp include/Navigator.hpp include/Screen.hpp src/GameScreen.cpp include/GameScreen.hpp src/DataService.cpp include/DataService.hpp include/Utilities.hpp src/Utilities.cpp include/InputHandlers.hpp src/InputHandlers.cpp include/DrawHangman.hpp src/DrawHangman.cpp)
+add_executable(hangman ${HANGMAN_SOURCES} src/Shader.cpp src/Navigator.cpp include/Navigator.hpp include/Screen.hpp src/GameScreen.cpp include/GameScreen.hpp src/DataService.cpp include/DataService.hpp include/Utilities.hpp src/Utilities.cpp include/InputHandlers.hpp src/InputHandlers.cpp include/DrawHangman.hpp src/DrawHangman.cpp src/WonScreen.cpp include/WonScreen.hpp src/DeadScreen.cpp include/DeadScreen.hpp)
 # add_executable(flag ${LAB2_SOURCE_FILES})
 
 

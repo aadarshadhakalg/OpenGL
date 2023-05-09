@@ -13,6 +13,7 @@ int GameScreen::display() {
 
 
     drawHangman(0);
+    drawCharPlaceHolder();
 
     // Bottom Separator
     glBegin(GL_LINES);
@@ -31,5 +32,46 @@ std::string GameScreen::getID() {
 }
 
 void GameScreen::drawHangman(int failures) {
-    if(failures)
+    if(failures == 0){
+        drawBar();
+        drawHead();
+        drawRope();
+        drawLeftHand();
+        drawRightHand();
+        drawLeftLeg();
+        drawRightLeg();
+        drawBody();
+    }
+}
+
+void GameScreen::drawCharPlaceHolder() {
+    // x start from -0.3
+    // max 10 chars
+    bool isComplete = true;
+    DataService* dataService = DataService::getInstance();
+    std::vector<char> typedWords = dataService->typpedWords;
+
+    //Answer Word
+    std::string answerWord = word->getWord();
+    float white[] = {1.0f,1.0f,1.0f,1.0f};
+
+    float startAtX = -0.3;
+    for (int i = 0; i < strlen(word->getWord().c_str()); ++i) {
+
+        if (std::count(typedWords.begin(), typedWords.end(), answerWord[i])) {
+            char letter = answerWord[i];
+            DisplayText::getInstance()->render_text(&letter,startAtX+0.01,0.0,white,48,0,0);
+        }else{
+            isComplete = false;
+        }
+        glBegin(GL_LINES);
+        glVertex2f(startAtX, 0.0);
+        glVertex2f(startAtX + 0.05, 0.0);
+        glEnd();
+        startAtX = startAtX + 0.1;
+    }
+
+    if(isComplete){
+        std::cout << "Congratulations Completed" << std::endl;
+    }
 }
