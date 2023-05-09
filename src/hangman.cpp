@@ -1,21 +1,12 @@
-#include <restc-cpp/restc-cpp.h>
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <display_text.hpp>
-#include <shader.hpp>
+#include <DisplayText.hpp>
+#include <Navigator.hpp>
+#include <StartScreen.hpp>
+#include <GameScreen.hpp>
+#include "InputHandlers.hpp"
 
-typedef void (*GameScreen)(GLFWwindow *window);
-
-GameScreen *gameScreen;
-
-void process_keys(GLFWwindow *window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-    {
-        std::cout << "Start The Game" << std::endl;
-    }
-}
 
 int main()
 {
@@ -28,7 +19,17 @@ int main()
         return -1;
     }
 
-    window = glfwCreateWindow(1600, 1200, "Hangman", nullptr, nullptr);
+
+    // Setup Window Full Screen
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+    glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+    glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+    glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+    window = glfwCreateWindow(mode->width, mode->height, "Hangman", monitor, nullptr);
+    float sx = 2.0f/ mode->width;
+    float sy = 2.0f/ mode->height;
 
     if (!window)
     {
@@ -45,30 +46,37 @@ int main()
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    // OpenGL State
+    // Initiate Navigator Object
+    auto startScreen = new StartScreen();
+    auto* gameNavigator = Navigator::getInstance();
+    gameNavigator->setCurrentScreen(startScreen);
+
+    // From Text Library
+    // Credit: https://gitlab.com/wikibooks-opengl/modern-tutorials/-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    // Create DisplayText Object ( Singleton )
+    auto displayText = DisplayText::getInstance();
+    displayText->fontfilename = "../fonts/Alter.ttf";
 
-    // CREATING VAO and VBA
-    unsigned int buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    // glBufferData(GL_ARRAY_BUFFER, 6);
+    // Init Display Text Resources (FreeType and Shader Compilation)
+    if(displayText->init_resources()) {
+        while (!glfwWindowShouldClose(window)) {
+            glClear(GL_COLOR_BUFFER_BIT);
 
-    while (!glfwWindowShouldClose(window))
-    {
-        glClear(GL_COLOR_BUFFER_BIT);
+            auto screen = gameNavigator->getCurrentScreen();
+            screen->display();
 
-        DisplayText* displayText = new DisplayText();
-        Shader shader = displayText->compile_text_shaders();
-        displayText->render_text(shader, "This is sample text", -1.0f, -1.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-//        displayText->render_text(shader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
+            glfwSwapBuffers(window);
+            glfwPollEvents();
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-        glfwSetKeyCallback(window, process_keys);
+            // Set Input process
+            glfwSetKeyCallback(window, processInputKeys);
+        }
     }
+
+    displayText->free_resources();
 
     glfwTerminate();
     return 0;

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(flag)
+project(hangman)
 set(CMAKE_CXX_STANDARD 17)
 
 
@@ -28,8 +28,8 @@ add_subdirectory(libraries/restc-cpp)
 
 file(GLOB HANGMAN_SOURCES src/*.cpp)
 # set(LAB2_SOURCE_FILES src/labs/miniproject.cpp)
-add_executable(flag ${HANGMAN_SOURCES})
+add_executable(hangman ${HANGMAN_SOURCES} src/Shader.cpp src/Navigator.cpp include/Navigator.hpp include/Screen.hpp src/GameScreen.cpp include/GameScreen.hpp src/DataService.cpp include/DataService.hpp include/Utilities.hpp src/Utilities.cpp include/InputHandlers.hpp src/InputHandlers.cpp include/DrawHangman.hpp src/DrawHangman.cpp)
 # add_executable(flag ${LAB2_SOURCE_FILES})
 
 
-target_link_libraries(flag ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARIES} ${GLEW_LIBRARIES} ${EIGEN3_LIBRARIES}  glfw restc-cpp)
+target_link_libraries(hangman ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARIES} ${GLEW_LIBRARIES} ${EIGEN3_LIBRARIES}  glfw restc-cpp)
