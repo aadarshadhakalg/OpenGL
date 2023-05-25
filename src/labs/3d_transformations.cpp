@@ -1,10 +1,11 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
-#include "cube_transformation_util.h"
+#include <vector>
+#include <cmath>
 #include <unistd.h>
 
 
-vector<vector<float>> vertices = {
+std::vector<std::vector<float>> vertices = {
         {-0.5f,0.5f,0.5f},
         {0.5f,0.5f,0.5f},
         {0.5f,-0.5f,0.5f},
@@ -16,7 +17,70 @@ vector<vector<float>> vertices = {
         {-0.5f,-0.5f,-0.5f},
 };
 
-void face(vector<float> a, vector<float> b, vector<float> c, vector<float> d){
+
+// Translates a cube on x, y and z axis
+void translateCube(std::vector<std::vector<float>> &vertices, float x, float y, float z) {
+    for (int i = 0; i < 8; i++) {
+        vertices[i][0] += x;
+        vertices[i][1] += y;
+        vertices[i][2] += z;
+    }
+}
+
+// Rotates a cube on the x-axis by the given angle.
+void rotateZ(std::vector<std::vector<float>> &vertices, float angle) {
+    angle = angle * 180/M_PI;
+    for (int i = 0; i < 8; i++) {
+        float x = vertices[i][0];
+        float y = vertices[i][1];
+        float z = vertices[i][2];
+
+        vertices[i][0] = x * cos(angle) - y * sin(angle);
+        vertices[i][1] = x * sin(angle) + y * cos(angle);
+        vertices[i][2] = z;
+    }
+}
+
+// Rotates a cube on the y-axis by the given angle.
+void rotateY(std::vector<std::vector<float>> &vertices, float angle) {
+    angle = angle * 180/M_PI;
+
+    for (int i = 0; i < 8; i++) {
+        float x = vertices[i][0];
+        float y = vertices[i][1];
+        float z = vertices[i][2];
+
+        vertices[i][0] = x * cos(angle) + z * sin(angle);
+        vertices[i][1] = y;
+        vertices[i][2] = -x * sin(angle) + z * cos(angle);
+    }
+}
+
+// Rotates a cube on the z-axis by the given angle.
+void rotateX(std::vector<std::vector<float>> &vertices, float angle) {
+    angle = angle * 180/M_PI;
+
+    for (int i = 0; i < 8; i++) {
+        float x = vertices[i][0];
+        float y = vertices[i][1];
+        float z = vertices[i][2];
+
+        vertices[i][0] = x;
+        vertices[i][1] = y * cos(angle) - z * sin(angle);
+        vertices[i][2] = y * sin(angle) + z * cos(angle);
+    }
+}
+
+// Scales a cube by scaling factors sx, xy and sz
+void scaleCube(std::vector<std::vector<float>> &vertices, float sx, float sy, float sz) {
+    for (int i = 0; i < 8; i++) {
+        vertices[i][0] *= sx;
+        vertices[i][1] *= sy;
+        vertices[i][2] *= sz;
+    }
+}
+
+void face(std::vector<float> a, std::vector<float> b, std::vector<float> c, std::vector<float> d){
 
 
     // Convert Vector Types to Array Types
@@ -38,7 +102,7 @@ void face(vector<float> a, vector<float> b, vector<float> c, vector<float> d){
     glEnd();
 }
 
-void drawPyramid(vector<vector<float>> &vertices){
+void drawPyramid(std::vector<std::vector<float>> &vertices){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glColor3f(1,0,0);
