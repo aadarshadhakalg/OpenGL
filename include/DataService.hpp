@@ -5,7 +5,6 @@
 #ifndef HANGMAN_DATASERVICE_HPP
 #define HANGMAN_DATASERVICE_HPP
 #include <string>
-#include <restc-cpp/restc-cpp.h>
 #include <vector>
 
 class Word{
