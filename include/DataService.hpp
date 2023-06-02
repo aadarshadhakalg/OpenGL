@@ -30,18 +30,22 @@ public:
 
 class DataService {
 private:
-    Word* words[10] = {
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 1"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 2"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 3"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 4"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 5"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 6"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 7"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 8"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 9"),
-            new Word("dilbar","A Famous Indian Song featuring Nora Fatehi 10"),
-
+    Word* words[15] = {
+            new Word("everton","Based in Mersyside"),
+            new Word("liverpool","Based in Mersyside"),
+            new Word("swansea","First Welsh team to reach the Premier Leauge"),
+            new Word("chelsea","Owned by A russian Billionaire"),
+            new Word("hull","Once managed by Phil Brown"),
+            new Word("manchester-city","2013 FA Cup runners up"),
+            new Word("newcastle-united","Gazza's first club"),
+            new Word("alien","Science-Fiction horror film"),
+            new Word("jaws","Giant great white shark"),
+            new Word("gladiator","Historical drama"),
+            new Word("manchester","Northern city in the UK"),
+            new Word("milan","Home of AC and Inter"),
+            new Word("madrid","Spanish capital"),
+            new Word("amsterdam","Netherlands capital"),
+            new Word("prague","Czech Republic capital"),
     };
     static DataService* inst_;   // The one, single instance
     DataService()=default;

@@ -5,7 +5,7 @@
 #include "DataService.hpp"
 
 Word* DataService::getRandomMovieDetail() {
-    int randomIndex = rand() % 10;
+    int randomIndex = rand() % 15;
     return words[randomIndex];
 }
 // Define the static Singleton pointer
