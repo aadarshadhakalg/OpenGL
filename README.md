@@ -62,6 +62,10 @@ To install and run the hangman game on Linux, please follow the instructions bel
 - You have a limited number of attempts to guess the word correctly before the hangman figure is completed. If the hangman figure is completed before you guess the word, the game is over, and you lose.
 - If you successfully guess the word before the hangman figure is completed, you win the game.
 
+## Author
+
+- Aadarsha Dhakal [Twitter @aadarshadhakalg](https://twitter.com/aadarshadhakalg) | [LinkedIn @aadarshadhakalg](https://www.linkedin.com/in/aadarshadhakalg/)
+
 ## Acknowledgements
 This hangman game uses the following libraries:
 
