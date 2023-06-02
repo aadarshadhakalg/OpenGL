@@ -38,6 +38,7 @@ void processInputKeys(GLFWwindow *window, int key, int scancode, int action, int
     }else{
         const char* key_name = glfwGetKeyName(key, 0);
         if(key_name != NULL){
+            SoundEffectService::getInstance()->playKeySound();
             DataService* dataService = DataService::getInstance();
             std::vector<char> currentList = dataService->typpedWords;
             if (!std::count( currentList.begin(), currentList.end(), *key_name)) {

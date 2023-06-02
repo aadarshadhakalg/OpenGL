@@ -6,13 +6,16 @@
 #include <string>
 #include <Navigator.hpp>
 #include <Screen.hpp>
-
+#include <SoundEffectService.h>
 
 class StartScreen : public Screen{
 
 public:
     StartScreen(){
         id = "startScreen";
+
+        SoundEffectService::getInstance()->playStartSound();
+
     };
     ~StartScreen() = default;
 

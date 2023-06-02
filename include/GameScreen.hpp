@@ -24,6 +24,8 @@ public:
     GameScreen(){
         id = "gameScreen";
         word = DataService::getInstance()->getRandomMovieDetail();
+
+        SoundEffectService::getInstance()->playBackgroundSound();
     };
     ~GameScreen() = default;
 

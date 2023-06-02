@@ -8,12 +8,14 @@
 
 #include "Screen.hpp"
 #include "DisplayText.hpp"
+#include "SoundEffectService.h"
 
 class DeadScreen: public Screen{
 
 public:
     DeadScreen(){
         id = "deadScreen";
+        SoundEffectService::getInstance()->playRIPSound();
     };
     ~DeadScreen() = default;
 

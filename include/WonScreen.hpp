@@ -8,12 +8,14 @@
 
 #include "DisplayText.hpp"
 #include "Screen.hpp"
+#include "SoundEffectService.h"
 
 class WonScreen : public Screen{
 
 public:
     WonScreen(){
         id = "wonScreen";
+        SoundEffectService::getInstance()->playCongratulationSound();
     };
     ~WonScreen() = default;
 
