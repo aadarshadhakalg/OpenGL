@@ -22,13 +22,13 @@ To install and run the hangman game on Linux, please follow the instructions bel
 1. Clone this repository to your local machine:
     
     ```bash
-    git clone https://github.com/username/hangman.git
+    git clone [https://github.com/aadarshadhakalg/OpenGL.git](https://github.com/aadarshadhakalg/OpenGL/).git
     ```
 
 1. Change to the project directory:
 
     ```bash
-    cd hangman
+    cd OpenGL
     ```
 
 1. Create a build directory:
